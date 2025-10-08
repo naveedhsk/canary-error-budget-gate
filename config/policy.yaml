@@ -11,10 +11,4 @@ providers:
     api_key: ${DD_API_KEY}
     app_key: ${DD_APP_KEY}
     site: "datadoghq.com"
-dependencies:
-  - name: payments-api
-    prom_slo_expr: "max_over_time(slo:payments:status[10m])"
-    dd_slo_id: "0000-1111-2222-3333"
-actions:
-  on_violation: rollback
-  on_warn: hold_and_recheck
+dependencies: []
