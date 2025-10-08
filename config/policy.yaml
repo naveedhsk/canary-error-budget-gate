@@ -1,7 +1,7 @@
 slo_targets:
-  p99_ms: 500
-  error_rate_pct: 1.0
-lookback_minutes: 10
+  p99_ms: 50
+  error_rate_pct: 0.5
+lookback_minutes: 2
 cooldown_minutes: 5
 providers:
   prometheus:
