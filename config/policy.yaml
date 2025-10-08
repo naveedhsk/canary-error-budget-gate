@@ -5,7 +5,7 @@ lookback_minutes: 2
 cooldown_minutes: 5
 providers:
   prometheus:
-    url: http://localhost:9090
+    #url: http://localhost:9090
     job: "canary-app"
   datadog:
     api_key: ${DD_API_KEY}
