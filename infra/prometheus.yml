@@ -9,4 +9,4 @@ scrape_configs:
       - targets: ['otel-collector:9464']
   - job_name: 'canary-app'
     static_configs:
-      - targets: ['host.docker.internal:8080']
+      - targets: ['172.18.0.1:8080']
