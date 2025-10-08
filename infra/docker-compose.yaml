@@ -5,7 +5,7 @@ services:
     volumes:
       - ${PWD}/infra/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     extra_hosts:
-      - "host.docker.internal:host-gateway"   # <— this line must be here
+      - "host.docker.internal:host-gateway"
   grafana:
     image: grafana/grafana:latest
     ports: ["3000:3000"]
