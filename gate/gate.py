@@ -6,9 +6,8 @@ import requests
 WARN_EXIT = 2
 VIOLATION_EXIT = 3
 
-PROM_P99_Q = 'histogram_quantile(0.99, sum by (le) (rate(http_server_request_duration_seconds_bucket{job="%s"}[5m])))'
-PROM_ERR_Q = 'sum(rate(http_server_requests_errors_total{job="%s"}[5m])) / sum(rate(http_server_requests_total{job="%s"}[5m])) * 100'
-
+PROM_P99_Q = 'histogram_quantile(0.99, sum by (le) (rate(http_server_request_duration_seconds_bucket{job="%s"}[2m])))'
+PROM_ERR_Q = '100 * sum(rate(http_server_requests_total{job="%s",code=~"5.."}[2m])) / clamp_min(sum(rate(http_server_requests_total{job="%s"}[2m])), 1e-9)'
 DD_METRIC_P99 = 'avg:last_5m:percentile(latency.ms{service:%s},99)'
 DD_METRIC_ERR = 'avg:last_5m:(sum:errors.count{service:%s}.as_count()/sum:requests.count{service:%s}.as_count())*100'
 
