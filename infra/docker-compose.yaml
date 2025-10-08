@@ -3,7 +3,7 @@ services:
     image: prom/prometheus:latest
     ports: ["9090:9090"]
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ${PWD}/infra/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"   # <— this line must be here
   grafana:
