@@ -1,29 +1,31 @@
 # Error-Budget Canary Gate (Datadog/Prom + OTel)
-## Problem
+
+**Problem**  
 Canaries “pass” while downstreams are red; p99/err-rate masked in blended traffic.
 
-## Approach
-- Collect SLO signals via OpenTelemetry → Datadog/Prom.
-- Gate logic: lookback N mins, thresholds for p95/p99, error rate, dep SLO status.
-- Actions: auto-halt, rollback, or proceed with cooldown.
+**Approach**  
+Collect SLO signals via OpenTelemetry → Datadog/Prom.  
+Gate logic: lookback N mins, thresholds for p95/p99, error rate, dep SLO status.  
+Actions: auto-halt, rollback, or proceed with cooldown.
 
-## Policy (YAML)
-slo_targets:
-  p99_ms: 500
-  error_rate_pct: 1.0
-lookback_minutes: 10
-cooldown_minutes: 5
-deps:
-  - name: payments-api
-    slo_endpoint: https://prom/.../slo_status
-actions:
-  on_violation: rollback
-  on_warn: hold_and_recheck
+**Quickstart (local, no K8s needed)**
+```bash
+make up          # start Prometheus (:9090) + Grafana (:3000) + OTel
+make app         # run Go sample at :8080
+make load        # send traffic
+make gate        # evaluate SLOs via Prometheus -> OK/WARN/VIOLATION
+```
 
-## Integration notes
-- **Datadog**: use Monitors API to fetch p95/p99 & error rate; tag by service/version.
-- **Prometheus**: sample queries for p99 latency and rate(errors)/rate(reqs).
-- **CI/CD**: call gate script as a pipeline stage; exit non-zero on violation.
+**Policy (YAML)**
+See `config/policy.yaml`
 
-## Outcome (example)
-- Failed rollouts ↓ ~70% in trials; MTTD faster; fewer customer-visible regressions.
+**CI/CD**
+Use `gate/gate.py` in a pipeline stage; non-zero exit on violation.
+
+**Outcome (example)**
+Failed rollouts ↓ ~70% in trials; MTTD faster; fewer customer-visible regressions.
+
+**Screenshots to add later**
+- Prometheus p99 spike
+- Gate JSON output
+- (Optional) Argo Rollouts blocked step

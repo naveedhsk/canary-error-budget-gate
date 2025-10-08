@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: canary-slo-gate
+spec:
+  metrics:
+  - name: slo-gate
+    successCondition: result == 0
+    provider:
+      job:
+        spec:
+          template:
+            spec:
+              restartPolicy: Never
+              containers:
+              - name: gate
+                image: python:3.11-slim
+                command: ["bash","-lc"]
+                args:
+                  - pip install PyYAML requests && echo "inline gate placeholder"

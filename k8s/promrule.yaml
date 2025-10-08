@@ -1,0 +1,10 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: canary-slo-rules
+spec:
+  groups:
+  - name: canary-slo
+    rules:
+    - record: http_server_requests_errors_total
+      expr: sum by (job)(rate(http_requests_total{code=~"5.."}[5m]))

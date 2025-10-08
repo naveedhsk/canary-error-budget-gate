@@ -1,0 +1,11 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: canary-app
+spec:
+  selector:
+    matchLabels:
+      app: canary-app
+  endpoints:
+  - port: http
+    path: /metrics
