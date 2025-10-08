@@ -20,14 +20,14 @@ var (
       Help:    "Request duration",
       Buckets: prometheus.DefBuckets,
     },
-    []string{"method","path","code"},
+    []string{"method", "path", "code"},
   )
   reqCnt = prometheus.NewCounterVec(
     prometheus.CounterOpts{
       Name: "http_server_requests_total",
       Help: "Request count",
     },
-    []string{"method","path","code"},
+    []string{"method", "path", "code"},
   )
 )
 
@@ -56,8 +56,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
   rand.Seed(time.Now().UnixNano())
-  prometheus.MustRegister(reqDur, reqCnt)
 
+  // register metrics and handlers
+  prometheus.MustRegister(reqDur, reqCnt)
   http.HandleFunc("/", handler)
   http.Handle("/metrics", promhttp.Handler())
 
@@ -66,6 +67,8 @@ func main() {
 }
 
 func getEnv(k, d string) string {
-  if v := os.Getenv(k); v != "" { return v }
+  if v := os.Getenv(k); v != "" {
+    return v
+  }
   return d
 }
